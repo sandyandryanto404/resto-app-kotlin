@@ -16,3 +16,16 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->group(['prefix' => 'auth'], function () use ($router) {
+        $router->post('login', ['uses' => 'AuthController@login']);
+        $router->post('logout', ['uses' => 'AuthController@logout']);
+        $router->post('refresh', ['uses' => 'AuthController@refresh']);
+        $router->post('register', ['uses' => 'AuthController@register']);
+        $router->get('confirm/{token}', ['uses' => 'AuthController@confirm']);
+        $router->post('resend', ['uses' => 'AuthController@resend']);
+        $router->post('email/forgot', ['uses' => 'AuthController@forgot']);
+        $router->post('email/reset/{token}', ['uses' => 'AuthController@reset']);
+    });
+});
