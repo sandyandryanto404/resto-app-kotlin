@@ -86,6 +86,12 @@ class MenuController extends ApiController
 
         $faker = Faker::create();
         $uuid = $faker->uuid();
+        $fileName = $faker->uuid();
+
+        if($request->file('file'))
+        {
+            $request->file('file')->move(storage_path('uploads'), $fileName);
+        }
 
         $model = Menu::create([
             "uuid"=> $uuid,

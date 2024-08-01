@@ -29,6 +29,8 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('invoice/{token}', ['uses' => 'InvoiceController@show']);
+
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('dashboard', ['uses' => 'DashboardController@index']);
     $router->group(['prefix' => 'auth'], function () use ($router) {

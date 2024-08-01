@@ -4,5 +4,5 @@ Homestead.json
 Homestead.yaml
 .env
 .phpunit.result.cache
-/public/uploads
-/public/files
+/storage/uploads
+/storage/files
