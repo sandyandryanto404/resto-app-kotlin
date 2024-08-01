@@ -93,7 +93,7 @@ class MenuController extends ApiController
         $this->validate($request, [
             'name' => 'required|string|max:255|unique:menus,name,' . $id,
             'category_id' => 'required|integer|min:1',
-            'price' => 'required|decimal|min:1',
+            'price' => 'required|integer|min:1',
             'status' => 'required|integer|min:0|digits_between: 0,1',
         ]);
 
