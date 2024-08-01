@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
                 $category = Category::where("name", "Snack")->first();
                 $faker = Faker::create();
                 Menu::create([
-                    'image'=> "menu-".$this->slugify($snack).".jpg",
+                    'image'=> "uploads/menu-".$this->slugify($snack).".jpg",
                     'uuid'=> $faker->uuid,
                     'category_id'=> $category->id,
                     'name'=> $snack,

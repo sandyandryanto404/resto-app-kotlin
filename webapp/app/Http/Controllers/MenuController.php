@@ -87,14 +87,22 @@ class MenuController extends ApiController
         $faker = Faker::create();
         $uuid = $faker->uuid();
         $fileName = $faker->uuid();
+        $filePath = null;
 
         if($request->file('file'))
         {
-            $request->file('file')->move(storage_path('uploads'), $fileName);
+           $upload = $request->file('file')->move(storage_path('uploads'), $fileName);
+
+           if($upload)
+           {
+                $filePath = "uploads/".$fileName.".jpg";
+           }
+
         }
 
         $model = Menu::create([
             "uuid"=> $uuid,
+            "image"=> $filePath,
             "name"=> $request->name,
             "category_id"=> $request->category_id,
             "price"=> $request->price,
@@ -122,6 +130,7 @@ class MenuController extends ApiController
             return $this->errorResponse("Record with id ".$id." was not found in our system. ", null, 422);
         }
 
+        $filePath = $model->image;
         $category_id = $request->category_id;
         $category = Category::where("id", $category_id)->first();
 
@@ -130,6 +139,18 @@ class MenuController extends ApiController
             return $this->errorResponse("Category with id ".$category_id." was not found in our system. ", null, 422);
         }
 
+        if($request->file('file'))
+        {
+           $upload = $request->file('file')->move(storage_path('uploads'), $fileName);
+
+           if($upload)
+           {
+                $filePath = "uploads/".$fileName.".jpg";
+           }
+
+        }
+
+        $model->image = $filePath;
         $model->name = $request->name;
         $model->price = $request->price;
         $model->category_id = $request->category_id;
