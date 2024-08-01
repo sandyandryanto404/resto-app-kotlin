@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * This file is part of the Sandy Andryanto Company Profile Website.
+ *
+ * @author     Sandy Andryanto <sandy.andryanto404@gmail.com>
+ * @copyright  2024
+ *
+ * For the full copyright and license information,
+ * please view the LICENSE.md file that was distributed
+ * with this source code.
+ */
+
+ 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -18,6 +30,7 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
+    $router->get('dashboard', ['uses' => 'DashboardController@index']);
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->post('login', ['uses' => 'AuthController@login']);
         $router->post('logout', ['uses' => 'AuthController@logout']);
@@ -46,5 +59,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('show/{id}', ['uses' => 'MenuController@show']);
         $router->put('edit/{id}', ['uses' => 'MenuController@edit']);
         $router->delete('delete/{id}', ['uses' => 'MenuController@delete']);
+    });
+    $router->group(['prefix' => 'order'], function () use ($router) {
+        $router->get('list', ['uses' => 'OrderController@list']);
+        $router->post('create', ['uses' => 'OrderController@create']);
+        $router->get('show/{id}', ['uses' => 'OrderController@show']);
+        $router->put('edit/{id}', ['uses' => 'OrderController@edit']);
+        $router->delete('delete/{id}', ['uses' => 'OrderController@delete']);
     });
 });

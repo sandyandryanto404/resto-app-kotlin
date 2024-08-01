@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * This file is part of the Sandy Andryanto Company Profile Website.
+ *
+ * @author     Sandy Andryanto <sandy.andryanto404@gmail.com>
+ * @copyright  2024
+ *
+ * For the full copyright and license information,
+ * please view the LICENSE.md file that was distributed
+ * with this source code.
+ */
+
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -145,11 +157,11 @@ class DatabaseSeeder extends Seeder
             {
                 $user = User::inRandomOrder()->first();
                 $faker = Faker::create();
-                $index = strlen($i) == 1 ? "0".$i : $i;
+                $index = strlen($i) == 1 ? "000".$i : "00".$i;
                 Order::create([
                     'uuid'=> $faker->uuid,
                     'user_id'=> $user->id,
-                    'order_number'=> date('Ymd')."0".$index,
+                    'order_number'=> date('Ymd')."000".$index,
                     'order_date'=> date('Y-m-d'),
                     'customer_name'=> $faker->name,
                     'customer_phone'=> $faker->phoneNumber,
