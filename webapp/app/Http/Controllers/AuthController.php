@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\ApiController;
 use App\Models\User;
 use App\Models\PasswordReset;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -32,9 +33,10 @@ class AuthController extends ApiController
     {
         $this->validate($request, ['email' => 'required|string', 'password' => 'required|string']);
         $credentials = $request->only(['email', 'password']);
+        $token = Auth::attempt($credentials, ['exp' => Carbon::now()->addDays(7)->timestamp]);
 
-        if (! $token = Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Please recheck the e-mail address and password and try again.'], 401);
+        if (!$token) {
+            return response()->json(['message' => 'Please recheck the e-mail address and password and try again.'], 422);
         }
 
         $email = $request->email;
@@ -73,7 +75,7 @@ class AuthController extends ApiController
 
         if(null === $user)
         {
-            return response()->json(['message' => 'A user was not found for this e-mail address'], 401);
+            return response()->json(['message' => 'A user was not found for this e-mail address'], 422);
         }
 
         $passwordReset = PasswordReset::where("user_id", $user->id)->first();
@@ -119,14 +121,14 @@ class AuthController extends ApiController
 
         if(null === $user)
         {
-            return response()->json(['message' => 'A user was not found for this e-mail address'], 401);
+            return response()->json(['message' => 'A user was not found for this e-mail address'], 422);
         }
 
         $getPasswordReset = PasswordReset::where("user_id", $user->id)->where("token", $token)->where("status", 0)->first();
 
         if(null === $getPasswordReset)
         {
-            return response()->json(['message' => 'The password reset token is invalid.'], 401);
+            return response()->json(['message' => 'The password reset token is invalid.'], 422);
         }
 
 
@@ -179,14 +181,14 @@ class AuthController extends ApiController
 
         if(null === $user)
         {
-            return response()->json(['message' => 'A user was not found for this email token'], 401);
+            return response()->json(['message' => 'A user was not found for this email token'], 422);
         }
         
         $verified = (int) $user->verified;
 
         if($verified == 1)
         {
-            return response()->json(['message' => 'Your account already verified, Now you can login to continue.'], 401);
+            return response()->json(['message' => 'Your account already verified, Now you can login to continue.'], 422);
         }
 
         $user->verified = 1;
@@ -204,14 +206,14 @@ class AuthController extends ApiController
 
         if(null === $user)
         {
-            return response()->json(['message' => 'A user was not found for this e-mail address'], 401);
+            return response()->json(['message' => 'A user was not found for this e-mail address'], 422);
         }
 
         $verified = (int) $user->verified;
 
         if($verified == 1)
         {
-            return response()->json(['message' => 'Your account already verified, Now you can login to continue.'], 401);
+            return response()->json(['message' => 'Your account already verified, Now you can login to continue.'], 422);
         }
 
         $faker = Faker::create();

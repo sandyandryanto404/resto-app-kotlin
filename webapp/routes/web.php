@@ -28,4 +28,23 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('email/forgot', ['uses' => 'AuthController@forgot']);
         $router->post('email/reset/{token}', ['uses' => 'AuthController@reset']);
     });
+    $router->group(['prefix' => 'account'], function () use ($router) {
+        $router->get('profile/me', ['uses' => 'AccountController@me']);
+        $router->post('profile/update', ['uses' => 'AccountController@profile']);
+        $router->post('profile/password', ['uses' => 'AccountController@password']);
+    });
+    $router->group(['prefix' => 'category'], function () use ($router) {
+        $router->get('list', ['uses' => 'CategoryController@list']);
+        $router->post('create', ['uses' => 'CategoryController@create']);
+        $router->get('show/{id}', ['uses' => 'CategoryController@show']);
+        $router->put('edit/{id}', ['uses' => 'CategoryController@edit']);
+        $router->delete('delete/{id}', ['uses' => 'CategoryController@delete']);
+    });
+    $router->group(['prefix' => 'menu'], function () use ($router) {
+        $router->get('list', ['uses' => 'MenuController@list']);
+        $router->post('create', ['uses' => 'MenuController@create']);
+        $router->get('show/{id}', ['uses' => 'MenuController@show']);
+        $router->put('edit/{id}', ['uses' => 'MenuController@edit']);
+        $router->delete('delete/{id}', ['uses' => 'MenuController@delete']);
+    });
 });
